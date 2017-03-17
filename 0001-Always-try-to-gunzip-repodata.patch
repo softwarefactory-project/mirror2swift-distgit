@@ -1,0 +1,31 @@
+From a0db1f3f09f4305df26664250149ea5b4cda5936 Mon Sep 17 00:00:00 2001
+From: Tristan Cacqueray <tdecacqu@redhat.com>
+Date: Mon, 6 Mar 2017 09:54:07 +0000
+Subject: [PATCH] Always try to gunzip repodata
+
+This change better support some mirrors that doesn't set the proper
+Content-Type and return gziped data as application/xml.
+---
+ mirror2swift/mirror2swift.py | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mirror2swift/mirror2swift.py b/mirror2swift/mirror2swift.py
+index c748b7c..73bdabe 100644
+--- a/mirror2swift/mirror2swift.py
++++ b/mirror2swift/mirror2swift.py
+@@ -55,10 +55,9 @@ def get_repodata_uri_list(base_url):
+     log.debug("Getting package list: %s%s" % (base_url, filelist[0]))
+     resp = requests.get("%s%s" % (base_url, filelist[0]))
+ 
+-    content_type = resp.headers.get('Content-Type', '')
+-    if 'gzip' in content_type:
++    try:
+         filelist = gzip.GzipFile(fileobj=StringIO.StringIO(resp.content)).read()
+-    else:
++    except:
+         filelist = resp.content
+ 
+     # Extract packages list
+-- 
+2.10.2
+
