@@ -2,7 +2,7 @@
 
 Name:           mirror2swift
 Version:        0.1
-Release:        1.20160818git7effa8e%{?dist}
+Release:        2.20160818git7effa8e%{?dist}
 Summary:        Tool to mirror a HTTP site to OpenStack Swift
 
 License:        ASL 2.0
@@ -10,6 +10,7 @@ URL:            https://github.com/cschwede/mirror2swift
 Source0:        https://github.com/cschwede/mirror2swift/archive/%{commit}.tar.gz
 
 Patch0:         0001-Always-try-to-gunzip-repodata.patch
+Patch1:         0001-Change-ttl-header-from-int-to-str.patch
 
 BuildArch:      noarch
 
@@ -45,5 +46,8 @@ rm requirements.txt test-requirements.txt
 
 
 %changelog
+* Thu Apr 06 2017 Tristan Cacqueray - 0.1-2
+- Add fix for incorrect ttl header
+
 * Fri Mar 17 2017 Tristan Cacqueray - 0.1-1
 - Initial packaging

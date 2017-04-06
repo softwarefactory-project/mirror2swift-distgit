@@ -1,0 +1,26 @@
+From 2922ea7496c423530977d469a066cc6a4ce5a943 Mon Sep 17 00:00:00 2001
+From: Tristan Cacqueray <tdecacqu@redhat.com>
+Date: Thu, 6 Apr 2017 00:48:09 +0000
+Subject: [PATCH] Change ttl header from int to str
+
+Otherwise requests is failing with requests.exceptions.InvalidHeader
+---
+ mirror2swift/mirror2swift.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mirror2swift/mirror2swift.py b/mirror2swift/mirror2swift.py
+index c748b7c..3a5ef4c 100644
+--- a/mirror2swift/mirror2swift.py
++++ b/mirror2swift/mirror2swift.py
+@@ -165,7 +165,7 @@ def upload_missing(download_url, swift_url, swift_key,
+             swift_url, sig, expires)
+         headers = None
+         if swift_ttl:
+-            headers = {'X-Delete-After': swift_ttl}
++            headers = {'X-Delete-After': str(swift_ttl)}
+         r = requests.put(tempurl, data=resp.content, headers=headers)
+         return r.ok
+     else:
+-- 
+2.10.2
+
